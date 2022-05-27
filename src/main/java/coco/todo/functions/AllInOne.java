@@ -6,28 +6,44 @@ import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
 
 import java.io.IOException;
+import java.util.List;
 
 public class AllInOne implements HttpFunction {
 
-    private ToDoListService toDoListService;
+    private final ToDoListService toDoListService = new ToDoListService();
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
         var writer = response.getWriter();
+        List<String> toDoList = toDoListService.getToDoList();
         if(request.getPath().equals("/ToDoList")){
-            writer.write("Aloha Dude");
-            //writer.write(toDoListService.getToDoList().toString());
+
+            writer.write("Your To Do List: \n");
+            for(String todo:toDoList){
+                writer.write(todo + "\n");
+            }
         }
         else if(request.getPath().equals("/ToDoList/add")){
             var todo = request.getFirstQueryParameter("todo");
             if (todo.isPresent() && !todo.get().isBlank()) {
-                String todoString = todo.get();
+                String toDoString = todo.get();
                 try {
-                    //toDoListService.addToDo(todoString);
-                    writer.write("You've added " + todoString + " to Your To Do List.");
+                    int c = 0;
+                    for (String toDo : toDoList) {
+                        c++;
+                        if(c==toDoList.size()){
+                            toDoListService.addToDo(toDoString);
+                            writer.write("You've added " + toDoString + " to Your To Do List.");
+                            writer.write("You've got " + toDoString + " already in Your To Do List.");
+                        }
+                        else if (toDo.equals(toDoString)) {
+                            writer.write("You've got " + toDoString + " already in Your To Do List.");
+                            break;
+                        }
+                    }
                 }
                 catch (IOException e) {
-                    writer.write("Sorry, " + todoString + " could not been added to Your To Do List!" );
+                    writer.write("Sorry, " + toDoString + " could not been added to Your To Do List!" );
                 }
             }
             else{
@@ -39,8 +55,18 @@ public class AllInOne implements HttpFunction {
             if (todo.isPresent() && !todo.get().isBlank()) {
                 String toDoString = todo.get();
                 try {
-                    //toDoListService.deleteToDo(toDoString);
-                    writer.write("You've deleted " + toDoString + " from Your To Do List.");
+                    int c = 0;
+                    for (String toDo : toDoList) {
+                        c++;
+                        if(c==toDoList.size()){
+                            writer.write("You've got no " + toDoString + " in Your To Do List.");
+                        }
+                        else if (toDo.equals(toDoString)) {
+                            toDoListService.deleteToDo(toDoString);
+                            writer.write("You've deleted " + toDoString + " from Your To Do List.");
+                            break;
+                        }
+                    }
                 }
                 catch (IOException e) {
                     writer.write("Sorry, " + toDoString + " could not been deleted from Your To Do List!" );
@@ -55,4 +81,5 @@ public class AllInOne implements HttpFunction {
         }
 
     }
+
 }

@@ -5,28 +5,29 @@ import java.util.List;
 
 public class ToDoListService {
 
-    List<ToDo> toDoList = new ArrayList<>();
+    List<String> toDoList = new ArrayList<>();
 
     public ToDoListService(){
         initToDoList();
     }
 
     private void initToDoList() {
-        toDoList.add(new ToDo("Sport"));
+        toDoList.add("sport");
+        toDoList.add("backen");
     }
 
-    public List<ToDo> getToDoList() {
+    public List<String> getToDoList() {
         return toDoList;
     }
 
     public void addToDo(String toDo){
-        toDoList.add(new ToDo(toDo));
+        toDoList.add(toDo);
     }
 
     public void deleteToDo(String toDoToDelete) {
         int i = 0;
-        for(ToDo toDo:toDoList){
-            if (toDo.getToDo().equals(toDoToDelete) && i == 0){
+        for(String toDo:toDoList){
+            if (toDo.equals(toDoToDelete) && i == 0){
                 toDoList.remove(toDo);
                 i++;
             }
