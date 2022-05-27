@@ -51,7 +51,7 @@
                 <artifactId>function-maven-plugin</artifactId>
                 <version>0.10.0</version>
                 <configuration>
-                    <functionTarget>coco.todo.functions.AllInOne</functionTarget>
+                    <functionTarget>coco.todo.functions.ToDoListFunctions</functionTarget>
                 </configuration>
             </plugin>
         </plugins>

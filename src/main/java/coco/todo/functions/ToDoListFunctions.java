@@ -8,7 +8,7 @@ import com.google.cloud.functions.HttpResponse;
 import java.io.IOException;
 import java.util.List;
 
-public class AllInOne implements HttpFunction {
+public class ToDoListFunctions implements HttpFunction {
 
     private final ToDoListService toDoListService = new ToDoListService();
 
