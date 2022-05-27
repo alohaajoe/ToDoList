@@ -6,7 +6,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 public class ToDoListServiceTest {
 
-    @Disabled
+    /*@Disabled
     @Test
     public void deleteToDo(){
         ToDoListService toDoListService = new ToDoListService();
@@ -17,6 +17,6 @@ public class ToDoListServiceTest {
         toDoListService.deleteToDo("Zeichnen");
 
         assertThat(toDoListService.getToDoList().size()).isEqualTo(1);
-    }
+    }*/
 
 }
