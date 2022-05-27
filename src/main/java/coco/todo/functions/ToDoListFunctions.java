@@ -1,6 +1,6 @@
 package coco.todo.functions;
 
-import coco.todo.ToDoListService;
+import coco.todo.service.ToDoListService;
 import com.google.cloud.functions.HttpFunction;
 import com.google.cloud.functions.HttpRequest;
 import com.google.cloud.functions.HttpResponse;
