@@ -35,13 +35,13 @@ public class AllInOne implements HttpFunction {
                     int c = 0;
                     for (String toDo : toDoList) {
                         c++;
-                        if(c==toDoList.size()){
-                            toDoListService.addToDo(toDoString);
-                            writer.write("You've added " + toDoString + " to Your To Do List.");
-                        }
-                        else if (toDo.equals(toDoString)) {
+                        if (toDo.equals(toDoString)) {
                             writer.write("You've got " + toDoString + " already in Your To Do List.");
                             break;
+                        }
+                        else if(c==toDoList.size()){
+                            toDoListService.addToDo(toDoString);
+                            writer.write("You've added " + toDoString + " to Your To Do List.");
                         }
                     }
                 }
@@ -65,13 +65,13 @@ public class AllInOne implements HttpFunction {
                     int c = 0;
                     for (String toDo : toDoList) {
                         c++;
-                        if(c==toDoList.size()){
-                            writer.write("You've got no " + toDoString + " in Your To Do List.");
-                        }
-                        else if (toDo.equals(toDoString)) {
+                        if (toDo.equals(toDoString)) {
                             toDoListService.deleteToDo(toDoString);
                             writer.write("You've deleted " + toDoString + " from Your To Do List.");
                             break;
+                        }
+                        else if(c==toDoList.size()){
+                            writer.write("You've got no " + toDoString + " in Your To Do List.");
                         }
                     }
                 }
