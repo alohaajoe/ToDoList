@@ -15,16 +15,20 @@ public class AllInOne implements HttpFunction {
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
         var writer = response.getWriter();
-        List<String> toDoList = toDoListService.getToDoList();
-        if(request.getPath().equals("/ToDoList")){
 
+        if(request.getPath().equals("/ToDoList")){
+            List<String> toDoList = toDoListService.getToDoList();
             writer.write("Your To Do List: \n");
             for(String todo:toDoList){
                 writer.write(todo + "\n");
             }
         }
+
         else if(request.getPath().equals("/ToDoList/add")){
+
             var todo = request.getFirstQueryParameter("todo");
+            List<String> toDoList = toDoListService.getToDoList();
+
             if (todo.isPresent() && !todo.get().isBlank()) {
                 String toDoString = todo.get();
                 try {
@@ -34,7 +38,6 @@ public class AllInOne implements HttpFunction {
                         if(c==toDoList.size()){
                             toDoListService.addToDo(toDoString);
                             writer.write("You've added " + toDoString + " to Your To Do List.");
-                            writer.write("You've got " + toDoString + " already in Your To Do List.");
                         }
                         else if (toDo.equals(toDoString)) {
                             writer.write("You've got " + toDoString + " already in Your To Do List.");
@@ -50,8 +53,12 @@ public class AllInOne implements HttpFunction {
                 writer.write("Please enter a To Do!" );
             }
         }
+
         else if(request.getPath().equals("/ToDoList/delete")){
+
             var todo = request.getFirstQueryParameter("todo");
+            List<String> toDoList = toDoListService.getToDoList();
+
             if (todo.isPresent() && !todo.get().isBlank()) {
                 String toDoString = todo.get();
                 try {
