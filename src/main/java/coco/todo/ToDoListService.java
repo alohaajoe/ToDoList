@@ -1,11 +1,8 @@
 package coco.todo;
 
-import org.springframework.stereotype.Service;
-
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
 public class ToDoListService {
 
     List<ToDo> toDoList = new ArrayList<>();

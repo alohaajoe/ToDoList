@@ -9,32 +9,12 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.6.2</version>
-    </parent>
-
     <dependencies>
-        <!-- https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html#getting-started-first-application-dependencies -->
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-
-        <!--REST-endpoint documentation-->
-        <!-- https://springdoc.org/#getting-started -->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-ui</artifactId>
-            <version>1.6.8</version>
-        </dependency>
-
         <dependency>
             <groupId>com.google.cloud.functions</groupId>
             <artifactId>functions-framework-api</artifactId>
@@ -54,21 +34,24 @@
             <version>3.22.0</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20220320</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
         <plugins>
-            <!-- https://docs.spring.io/spring-boot/docs/current/reference/html/getting-started.html#getting-started-first-application-executable-jar -->
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
             <plugin>
                 <groupId>com.google.cloud.functions</groupId>
                 <artifactId>function-maven-plugin</artifactId>
                 <version>0.10.0</version>
                 <configuration>
-                    <functionTarget>coco.todo.functions.AddToDo</functionTarget>
+                    <functionTarget>coco.todo.functions.AllInOne</functionTarget>
                 </configuration>
             </plugin>
         </plugins>

@@ -8,7 +8,22 @@ public class Example implements HttpFunction {
 
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
-        var writer = response.getWriter();
-        writer.write("Aloha Dude");
+            response.setStatusCode(200);
+            response.setContentType("text/plain");
+
+            var writer = response.getWriter();
+
+            var todo = request.getFirstQueryParameter("todo");
+            if(todo.isPresent()){
+                try{
+                    writer.write("ToDo: " + todo.get());
+                }
+                catch (Exception e){
+                    writer.write("Please provide a valid number.");
+                }
+            }
+            else {
+                writer.write("Please provide a number");
+            }
     }
 }
