@@ -27,9 +27,9 @@ public class ToDoListFunctions implements HttpFunction {
         else if(request.getPath().equals("/ToDoList/add")){
 
             var todo = request.getFirstQueryParameter("todo");
-            List<String> toDoList = toDoListService.getToDoList();
 
             if (todo.isPresent() && !todo.get().isBlank()) {
+                List<String> toDoList = toDoListService.getToDoList();
                 String toDoString = todo.get();
                 try {
                     int c = 0;
@@ -57,9 +57,9 @@ public class ToDoListFunctions implements HttpFunction {
         else if(request.getPath().equals("/ToDoList/delete")){
 
             var todo = request.getFirstQueryParameter("todo");
-            List<String> toDoList = toDoListService.getToDoList();
 
             if (todo.isPresent() && !todo.get().isBlank()) {
+                List<String> toDoList = toDoListService.getToDoList();
                 String toDoString = todo.get();
                 try {
                     int c = 0;
