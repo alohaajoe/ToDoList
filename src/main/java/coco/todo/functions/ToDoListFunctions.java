@@ -15,21 +15,13 @@ public class ToDoListFunctions implements HttpFunction {
     @Override
     public void service(HttpRequest request, HttpResponse response) throws IOException {
         var writer = response.getWriter();
+        List<String> toDoList = toDoListService.getToDoList();
 
-        if(request.getPath().equals("/ToDoList")){
-            List<String> toDoList = toDoListService.getToDoList();
-            writer.write("Your To Do List: \n");
-            for(String todo:toDoList){
-                writer.write(todo + "\n");
-            }
-        }
-
-        else if(request.getPath().equals("/ToDoList/add")){
+        if(request.getPath().equals("/add")){
 
             var todo = request.getFirstQueryParameter("todo");
 
             if (todo.isPresent() && !todo.get().isBlank()) {
-                List<String> toDoList = toDoListService.getToDoList();
                 String toDoString = todo.get();
                 try {
                     int c = 0;
@@ -50,16 +42,13 @@ public class ToDoListFunctions implements HttpFunction {
                 }
             }
             else{
-                writer.write("Please enter a To Do!" );
+                writer.write("Please enter a To Do to add!" );
             }
         }
 
-        else if(request.getPath().equals("/ToDoList/delete")){
-
+        else if(request.getPath().equals("/delete")){
             var todo = request.getFirstQueryParameter("todo");
-
             if (todo.isPresent() && !todo.get().isBlank()) {
-                List<String> toDoList = toDoListService.getToDoList();
                 String toDoString = todo.get();
                 try {
                     int c = 0;
@@ -83,10 +72,12 @@ public class ToDoListFunctions implements HttpFunction {
                 writer.write("Please enter a To Do to delete!" );
             }
         }
+
         else{
-            writer.write("No Valid Input");
+            writer.write("Your To Do List: \n");
+            for(String todo:toDoList){
+                writer.write(todo + "\n");
+            }
         }
-
     }
-
 }
