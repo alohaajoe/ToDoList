@@ -8,79 +8,106 @@ http://localhost:8080/swagger-ui/index.htm
 Zunächst müssen wir ein neues Projekt erstellen.
 Dazu geben wir in der Cloud Shell fonlgendes ein:
 
+```
 	(gcloud projects list)
 	gcloud projects create ToDoList-${CAMPUS_ID}-01
+```
 
 --------------------------------------------------------------------------------------------
 
 Mit
 
+```
 	gcloud config list
+```
 
 lassen wir uns die Konfigurationen des Projekts ausgeben, indem wir uns gerade befinden.
 Falls wir dort keine Zeile ausfündig machen können die
 
+```
 	project = ToDoList-${CAMPUS_ID}-01
+```
 
 beinhaltet, wechseln wir zu dem Projekt, indem wir folgendes eingeben:
 
+```
 	gcloud config set project ToDoList-${CAMPUS_ID}-01
+```
 
 wir können danach erneut "gcloud config list" eingeben und sollten dann eine Zeile mit
 "project = ToDoList-${CAMPUS_ID}-01" finden.
 
-In der Umgebungsvariable DEVSHELL_PROJECT_ID der Cloud Shell ist außerdem die Projekt-ID unseres Projekts gespeichert.
+In der Umgebungsvariable ```DEVSHELL_PROJECT_ID``` der Cloud Shell ist außerdem die Projekt-ID unseres Projekts gespeichert.
 
 --------------------------------------------------------------------------------------------
 
 Nun müssen wir noch unseren Billing Account mit dem Projekt verbinden.
 Immerhin kostet das ganze Geld und darüber wird dann die Abrechnung erfolgen.
 
+```
 	gcloud beta billing projects link ${DEVSHELL_PROJECT_ID} --billing-account=<AccountID>
 
 	(gcloud beta billing projects link ${DEVSHELL_PROJECT_ID} --billing-account=01CE01-D50165-8527AF)
+```
 
 Es bietet sich an, die Abrechnung zu stoppen:
-gcloud beta billing projects unlink ${DEVSHELL_PROJECT_ID}
+
+```
+    gcloud beta billing projects unlink ${DEVSHELL_PROJECT_ID}
+```
 
 --------------------------------------------------------------------------------------------
 
 Wir setzen noch die region und Zeitzone
 
+```
 	gcloud config set compute/region europe-west3
 	gcloud config set compute/zone europe-west3-c
+```
 
-Außerdem aktivieren noch noch die cloudfunktion und die cloudbuild API.
-Diese werden zum erzeugen von CLoud Functions benötigt.
+Außerdem aktivieren wir noch die cloudfunktion und die cloudbuild API.
+Diese werden zum Erzeugen von CLoud Functions benötigt.
 
+```
 	gcloud services enable cloudfunctions.googleapis.com
 	gcloud services enable cloudbuild.googleapis.com
-
+```
 
 -------------------- A U F  D E M  P C -----------------------------------------
 
 Wir erstellen zunächst einen neuen Ordner lokal auf unserem PC, indem sich das Java Projekt befindet.
 
+```
 	mkdir ~/ToDoList
+```
+
 Mit
+
+```
 cd ~/ToDoList
+```
+
 wechseln wir in den neuen Ordner.
 
 Nun kümmern wir uns um die Programmstruktur und legen dort Zwei Java-Klassen und eine pom.xml an.
 
+```
 	touch pom.xml
 	mkdir -p src/main/java/todolist/functions
 	touch src/main/java/todolist/functions/ToDoListFunctions.java
 	mkdir -p src/main/java/todolist/service
 	touch src/main/java/todolist/service/ToDoListService.java
+```
 
 Wir öffnen die noch leeren Dateien im Nano-Text-Editor. Alternativ geht das natürlich auch über beispielsweise VS Code oder IntelliJ.
 
+```
 	nano src/main/java/todolist/service/ToDoListService.java
+```
 
 Dort dann Folgendes rein kopieren:
 
-
+```java
 	package todolist.service;
 
 	import java.util.ArrayList;
@@ -117,18 +144,20 @@ Dort dann Folgendes rein kopieren:
             }
         }
 	}
-
+```
 
 Diese Klasse stellt die wesentlichen Funktionen der To Do List bereit.
 Außerdem wird im Konstriktor, die Methode initToDoList aufgerufen, die schon "sport" und "backen" zur Liste hinzufügt.
 
 ToDoListFunctions.java
 
+```
 	nano src/main/java/todolist/functions/ToDoListFunctions.java
+```
 
 Dort dann Folgendes rein kopieren:
 
-
+```java
 	package todolist.functions;
 
 	import todolist.service.ToDoListService;
@@ -213,17 +242,20 @@ Dort dann Folgendes rein kopieren:
             }
         }
 	}
-
+```
 
 
 Hier passiert die Zuordnung der einzelnen Funktionen der ToDoListService Klasse.
 
 pom.xml
 
+```
 	nano pom.xml
+```
 
 Dort dann Folgendes rein kopieren:
 
+```xml
 	<project xmlns="http://maven.apache.org/POM/4.0.0"
     	         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     		   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -270,40 +302,52 @@ Dort dann Folgendes rein kopieren:
             </plugins>
   		</build>
 	</project>
-
+```
 
 Mit dem Google Cloud Functions Framework Maven Plugin, kann man das Programm loacal testen
 
+```
 	mvn function:run
+```
 
 In einem neuen Terminal Fenster
 
+```
 	curl localhost:8080
+```
 
-Oder im browser localhost:8080 aufrufen. Es sollte eine To Do Liste mit sport und backen zu sehen sein.
+Oder im browser ```localhost:8080``` aufrufen. Es sollte eine To Do Liste mit sport und backen zu sehen sein.
 
-Mit Strg/Control + C kann das Programm angehalten werden.
+Mit ```Strg/Control + C``` kann das Programm angehalten werden.
 
+```
 	mvn clean 
+```
 
 Dann kann es hochgeladen werden.
 
 -------------------------------------------------------------------------------------------------------------------
 
+```
 	cd todolist/
 
 	gcloud functions deploy todolist-function --entry-point todolist.functions.ToDoListFunctions --runtime java11 --trigger-http --memory 512MB --allow-unauthenticated --region europe-west3
+```
 
-Wenn alles erfolgreich war, sehen wir auch die URL die wir aufrufen können um die Function zu triggern
+Wenn alles erfolgreich war, sehen wir auch die URL, die wir aufrufen können um die Function zu triggern
 
+```
 	httpsTrigger:
   		securityLevel: SECURE_ALWAYS
   		url: https://europe-west3-ToDoList-jhaseloh-01.cloudfunctions.net/todolist-function
+```
 
 Im Browser: https://us-central1-function-jhaseloh-01.cloudfunctions.net/todolist-function
 
 Oder auf dem PC auf der Konsole:
 
+```
 	curl https://us-central1-function-jhaseloh-01.cloudfunctions.net/todolist-function
 
 	gcloud functions logs read tolist-function
+```
