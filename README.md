@@ -88,34 +88,34 @@ Dort dann Folgendes rein kopieren:
 
 	public class ToDoListService {
 
-    		List<String> toDoList = new ArrayList<>();
+        List<String> toDoList = new ArrayList<>();
 
-    		public ToDoListService(){
-        		initToDoList();
-    		}
+        public ToDoListService(){
+            initToDoList();
+        }
 
-    		private void initToDoList() {
-        		toDoList.add("sport");
-        		toDoList.add("backen");
-    		}
+        private void initToDoList() {
+            toDoList.add("sport");
+            toDoList.add("backen");
+        }
 
-    		public List<String> getToDoList() {
-        		return toDoList;
-    		}
+        public List<String> getToDoList() {
+            return toDoList;
+        }
 
-    		public void addToDo(String toDo){
-        		toDoList.add(toDo);
-    		}
+        public void addToDo(String toDo){
+            toDoList.add(toDo);
+        }
 
-    		public void deleteToDo(String toDoToDelete) {
-        		int i = 0;
-        		for(String toDo:toDoList){
-            		if (toDo.equals(toDoToDelete) && i == 0){
-                			toDoList.remove(toDo);
-                			i++;
-            		}
-        		}
-    		}
+        public void deleteToDo(String toDoToDelete) {
+            int i = 0;
+            for(String toDo:toDoList){
+                if (toDo.equals(toDoToDelete) && i == 0){
+                        toDoList.remove(toDo);
+                        i++;
+                }
+            }
+        }
 	}
 
 
@@ -142,76 +142,76 @@ Dort dann Folgendes rein kopieren:
 
 	public class ToDoListFunctions implements HttpFunction {
 
-    		private final ToDoListService toDoListService = new ToDoListService();
+        private final ToDoListService toDoListService = new ToDoListService();
 
-    		@Override
-    		public void service(HttpRequest request, HttpResponse response) throws IOException {
-        		var writer = response.getWriter();
-        		List<String> toDoList = toDoListService.getToDoList();
+        @Override
+        public void service(HttpRequest request, HttpResponse response) throws IOException {
+            var writer = response.getWriter();
+            List<String> toDoList = toDoListService.getToDoList();
 
-        		if(request.getPath().equals("/add")){
+            if(request.getPath().equals("/add")){
 
-            		var todo = request.getFirstQueryParameter("todo");
+                var todo = request.getFirstQueryParameter("todo");
 
-            		if (todo.isPresent() && !todo.get().isBlank()) {
-                			String toDoString = todo.get();
-               	 		try {
-                    			int c = 0;
-                    			for (String toDo : toDoList) {
-                        			c++;
-                        			if (toDo.equals(toDoString)) {
-                            				writer.write("You've got " + toDoString + " already in Your To Do List.");
-                            				break;
-                        			}
-                        			else if(c==toDoList.size()){
-                            				toDoListService.addToDo(toDoString);
-                            				writer.write("You've added " + toDoString + " to Your To Do List.");
-                        			}
-                    			}
-                			}
-                			catch (IOException e) {
-                    			writer.write("Sorry, " + toDoString + " could not been added to Your To Do List!" );
-                			}
-            		}
-            		else{
-                			writer.write("Please enter a To Do to add!" );
-            		}
-        		}
+                if (todo.isPresent() && !todo.get().isBlank()) {
+                        String toDoString = todo.get();
+                    try {
+                            int c = 0;
+                            for (String toDo : toDoList) {
+                                c++;
+                                if (toDo.equals(toDoString)) {
+                                        writer.write("You've got " + toDoString + " already in Your To Do List.");
+                                        break;
+                                }
+                                else if(c==toDoList.size()){
+                                        toDoListService.addToDo(toDoString);
+                                        writer.write("You've added " + toDoString + " to Your To Do List.");
+                                }
+                            }
+                        }
+                        catch (IOException e) {
+                            writer.write("Sorry, " + toDoString + " could not been added to Your To Do List!" );
+                        }
+                }
+                else{
+                        writer.write("Please enter a To Do to add!" );
+                }
+            }
 
-        		else if(request.getPath().equals("/delete")){
-           	 		var todo = request.getFirstQueryParameter("todo");
-            		if (todo.isPresent() && !todo.get().isBlank()) {
-                			String toDoString = todo.get();
-                			try {
-                    			int c = 0;
-                    			for (String toDo : toDoList) {
-                        			c++;
-                        			if (toDo.equals(toDoString)) {
-                            				toDoListService.deleteToDo(toDoString);
-                            				writer.write("You've deleted " + toDoString + " from Your To Do List.");
-                            				break;
-                        			}
-                        			else if(c==toDoList.size()){
-                            				writer.write("You've got no " + toDoString + " in Your To Do List.");
-                        			}
-                    			}
-                			}
-                			catch (IOException e) {
-                    			writer.write("Sorry, " + toDoString + " could not been deleted from Your To Do List!" );
-               	 		}
-            		}
-            		else{
-                			writer.write("Please enter a To Do to delete!" );
-            		}
-        		}
+            else if(request.getPath().equals("/delete")){
+                var todo = request.getFirstQueryParameter("todo");
+                if (todo.isPresent() && !todo.get().isBlank()) {
+                        String toDoString = todo.get();
+                        try {
+                            int c = 0;
+                            for (String toDo : toDoList) {
+                                c++;
+                                if (toDo.equals(toDoString)) {
+                                        toDoListService.deleteToDo(toDoString);
+                                        writer.write("You've deleted " + toDoString + " from Your To Do List.");
+                                        break;
+                                }
+                                else if(c==toDoList.size()){
+                                        writer.write("You've got no " + toDoString + " in Your To Do List.");
+                                }
+                            }
+                        }
+                        catch (IOException e) {
+                            writer.write("Sorry, " + toDoString + " could not been deleted from Your To Do List!" );
+                    }
+                }
+                else{
+                        writer.write("Please enter a To Do to delete!" );
+                }
+            }
 
-        		else{
-            		writer.write("Your To Do List: \n");
-            		for(String todo:toDoList){
-                			writer.write(todo + "\n");
-            		}
-        		}
-    		}
+            else{
+                writer.write("Your To Do List: \n");
+                for(String todo:toDoList){
+                        writer.write(todo + "\n");
+                }
+            }
+        }
 	}
 
 
@@ -234,40 +234,40 @@ Dort dann Folgendes rein kopieren:
   		<version>1.0.0-SNAPSHOT</version>
 
   		<properties>
-    			<maven.compiler.target>11</maven.compiler.target>
-    			<maven.compiler.source>11</maven.compiler.source>
+            <maven.compiler.target>11</maven.compiler.target>
+            <maven.compiler.source>11</maven.compiler.source>
   		</properties>
 
   		<dependencies>
-    			<!-- Required for Function primitives -->
-    			<dependency>
-      			<groupId>com.google.cloud.functions</groupId>
-      			<artifactId>functions-framework-api</artifactId>
-      			<version>1.0.4</version>
-      			<scope>provided</scope>
-    			</dependency>
+            <!-- Required for Function primitives -->
+            <dependency>
+            <groupId>com.google.cloud.functions</groupId>
+            <artifactId>functions-framework-api</artifactId>
+            <version>1.0.4</version>
+            <scope>provided</scope>
+            </dependency>
   		</dependencies>
 
   		<build>
-    			<plugins>
+            <plugins>
       			<plugin>
-        				<!--
-          				Google Cloud Functions Framework Maven plugin
+                    <!--
+                    Google Cloud Functions Framework Maven plugin
 
-          				This plugin allows you to run Cloud Functions Java code
-          				locally. Use the following terminal command to run a
-          				given function locally:
+                    This plugin allows you to run Cloud Functions Java code
+                    locally. Use the following terminal command to run a
+                    given function locally:
 
-          				mvn function:run -Drun.functionTarget=your.package.yourFunction
-        				-->
-        				<groupId>com.google.cloud.functions</groupId>
-        				<artifactId>function-maven-plugin</artifactId>
-        				<version>0.10.0</version>
-        				<configuration>
-          					<functionTarget>todolist.functions.ToDoListFunctions</functionTarget>
-        				</configuration>
+                    mvn function:run -Drun.functionTarget=your.package.yourFunction
+                    -->
+                    <groupId>com.google.cloud.functions</groupId>
+                    <artifactId>function-maven-plugin</artifactId>
+                    <version>0.10.0</version>
+                    <configuration>
+                        <functionTarget>todolist.functions.ToDoListFunctions</functionTarget>
+                    </configuration>
       			</plugin>
-    			</plugins>
+            </plugins>
   		</build>
 	</project>
 
