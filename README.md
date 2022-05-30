@@ -239,13 +239,13 @@ Dort dann Folgendes rein kopieren:
   		</properties>
 
   		<dependencies>
-            <!-- Required for Function primitives -->
-            <dependency>
-            <groupId>com.google.cloud.functions</groupId>
-            <artifactId>functions-framework-api</artifactId>
-            <version>1.0.4</version>
-            <scope>provided</scope>
-            </dependency>
+                 <!-- Required for Function primitives -->
+                <dependency>
+                    <groupId>com.google.cloud.functions</groupId>
+                    <artifactId>functions-framework-api</artifactId>
+                    <version>1.0.4</version>
+                    <scope>provided</scope>
+                </dependency>
   		</dependencies>
 
   		<build>
