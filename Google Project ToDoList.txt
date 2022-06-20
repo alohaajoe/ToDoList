@@ -306,4 +306,4 @@ Oder auf dem PC auf der Konsole:
 
 	curl https://us-central1-function-jhaseloh-01.cloudfunctions.net/todolist-function
 
-	gcloud functions logs read tolist-function
+	gcloud functions logs read todolist-function --region europe-west3

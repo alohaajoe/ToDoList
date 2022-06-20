@@ -90,6 +90,8 @@ gcloud config set compute/region europe-west3
 gcloud config set compute/zone europe-west3-c
 ```
 
+Ggf. mit `y` bestätigen. Dieser Prozess kann einige Minuten dauern. <br>
+
 Außerdem aktivieren wir noch die cloudfunktion und die cloudbuild API.<br>
 Diese werden zum Erzeugen von Cloud Functions benötigt.
 
@@ -97,6 +99,7 @@ Diese werden zum Erzeugen von Cloud Functions benötigt.
 gcloud services enable cloudfunctions.googleapis.com
 gcloud services enable cloudbuild.googleapis.com
 ```
+Auch das kann etwas Zeit in Anspruch nehmen.
 
 ---
 
@@ -178,6 +181,9 @@ public class ToDoListService {
 }
 ```
 Anschließend speichern.
+Das geht im Nano Editor mit ^X (Git Bash Strg + X) für Exit. 
+Anschließend wird man gefragt, ob man die Änderungen speichern möchte. Mit Y bestätigt man die Änderungen.
+Den Dateinamen behalten wir bei und bestätigen diesen lediglich mit einem Enter.
 
 Diese Klasse stellt die wesentlichen Funktionen der To Do List bereit.<br>
 Außerdem wird im Konstruktor, die Methode `initToDoList` aufgerufen, die schon _"sport"_ und _"backen"_ zur Liste hinzufügt.
@@ -363,38 +369,85 @@ In einem neuen Terminal Fenster
 curl localhost:8080
 ```
 
-Oder im browser ```localhost:8080``` aufrufen. Es sollte eine To Do Liste mit _sport_ und _backen_ zu sehen sein.
+Oder im browser ```localhost:8080``` aufrufen. Es sollte eine To Do Liste mit _"sport"_ und _"backen"_ zu sehen sein.
+
+Da wir mehrere Endpoints in der Klasse `ToDoListFunctions.java` haben, lassen sich mithilfe dieser Tabelle die verschiedenen Funktionen testen.
+
+| URL- Beispiel                    | Funktion                                                                       |
+|----------------------------------|--------------------------------------------------------------------------------|
+| localhost:8080                   | Zeigt die To Do Liste an.                                                      |
+| localhost:8080/add?todo=duschen  | Fügt _"duschen"_ der To Do Liste hinzu, vorausgesetzt es existiert noch nicht. |
+| localhost:8080/delete?todo=sport | Löscht _"sport"_ aus der To Do Liste, vorausgesetzt es existiert.              |
+
 
 Mit ```Strg/Control + C``` kann das Programm angehalten werden.<br>
+
 Anschließend ```mvn clean``` ausführen.
 
 -------------------------------------------------------------------------------------------------------------------
 ## Hochladen
 
+![Hochladen](Bilder/img.png)<br>
+
+Nun können wir den ganzen Projektordner `ToDoList` auf die Google Cloud hochlade.<br>
+Das machen wir, indem wir rechts beim Cloud Shell Fenster auf die 3 Punkte klicken und dort "Hochladen" auswählen.<br>
+
+![Ordner wählen](Bilder/img_1.png)<br>
+
+In dem Menü, welches sich in einem Pop-up-Fenster öffnet, wählen wir zunächst aus, dass wir einen Ordner hochladen wollen (blaue Markierung).<br>
+Anschließend wählen wir unseren Ordner `ToDoList` aus (grüne Markierung).<br>
+
+Das sollte dann so ausschauen:
+
+![Hochladen abschließen](Bilder/img_2.png)<br>
+
+Zum Schluss klicken wir auf _"Hochladen"_ (rote Markierung).
+
 ---
 
 ## Cloud Function konfigurieren
 
-```
-cd todolist/
+In der Cloud Shell wechseln wir in den neuen Ordner `ToDoList`.
 
+```
+cd ToDoList/
+```
+
+Anschließend führen wir dort folgenden Befehl aus, um eine Cloud Function zu erstellen:
+
+```
 gcloud functions deploy todolist-function --entry-point todolist.functions.ToDoListFunctions --runtime java11 --trigger-http --memory 512MB --allow-unauthenticated --region europe-west3
 ```
+Dies kann ein paar Minuten dauern. <br>
 
 Wenn alles erfolgreich war, sehen wir auch die URL, die wir aufrufen können um die Function zu triggern
 
 ```
 httpsTrigger:
     securityLevel: SECURE_ALWAYS
-    url: https://europe-west3-ToDoList-01.cloudfunctions.net/todolist-function
+    url: https://europe-west3-todolist-01.cloudfunctions.net/todolist-function
 ```
 
-Im Browser: https://europe-west3-ToDoList-01.cloudfunctions.net/todolist-function
+Im Browser: https://europe-west3-todolist-01.cloudfunctions.net/todolist-function
 
 Oder auf dem PC auf der Konsole:
 
 ```
-curl https://europe-west3-ToDoList-01.cloudfunctions.net/todolist-function
-
-gcloud functions logs read tolist-function
+curl https://europe-west3-todolist-01.cloudfunctions.net/todolist-function
 ```
+
+Ebenso wie zuvor Lokal getestet, sollte auch nun die To Do Liste mit _"sport"_ und _"backen"_ zu sehen sein.
+
+Wir können die Tabelle von oben übernehmen und `localhost:8080` durch die neue URL ersetzen.
+
+---
+
+# Log ausgeben lassen 
+
+Um uns anzuschauen, wann wer auf unsere neue Funktion zugegriffen hat, können wir 
+
+```
+gcloud functions logs read todolist-function --region europe-west3
+```
+
+eingeben.
