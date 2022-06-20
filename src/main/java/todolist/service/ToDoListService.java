@@ -1,4 +1,4 @@
-package coco.todo.service;
+package todolist.service;
 
 import java.util.ArrayList;
 import java.util.List;
