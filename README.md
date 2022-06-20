@@ -28,7 +28,7 @@ Zunächst müssen wir ein neues Projekt erstellen.<br>
 Dazu geben wir in der Cloud Shell Folgendes ein:
 
 ```
-gcloud projects create ToDoList-01
+gcloud projects create todolist-01
 ```
 
 --------------------------------------------------------------------------------------------
@@ -45,17 +45,17 @@ lassen wir uns die Konfigurationen des Projekts ausgeben, indem wir uns gerade b
 Falls wir dort keine Zeile aus fündig machen können die
 
 ```
-project = ToDoList-01
+project = todolist-01
 ```
 
 beinhaltet, wechseln wir zu dem Projekt, indem wir folgendes eingeben:
 
 ```
-gcloud config set project ToDoList-01
+gcloud config set project todolist-01
 ```
 
 wir können danach erneut `"gcloud config list"` eingeben und sollten dann eine Zeile mit
-`"project = ToDoList-01"` finden.
+`"project = todolist-01"` finden.
 
 In der Umgebungsvariable ```DEVSHELL_PROJECT_ID``` der Cloud Shell ist außerdem die Projekt-ID unseres Projekts gespeichert.
 
