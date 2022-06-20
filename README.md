@@ -28,8 +28,7 @@ Zunächst müssen wir ein neues Projekt erstellen.<br>
 Dazu geben wir in der Cloud Shell Folgendes ein:
 
 ```
-(gcloud projects list)
-gcloud projects create ToDoList-${CAMPUS_ID}-01
+gcloud projects create ToDoList-01
 ```
 
 --------------------------------------------------------------------------------------------
@@ -73,7 +72,7 @@ gcloud beta billing projects link ${DEVSHELL_PROJECT_ID} --billing-account=<Acco
 (gcloud beta billing projects link ${DEVSHELL_PROJECT_ID} --billing-account=01CE01-D50165-8527AF)
 ```
 
-Es bietet sich an, die Abrechnung zu stoppen:
+Es bietet sich an, die Abrechnung zu stoppen, wenn das Projekt nicht mehr genutzt wird:
 
 ```
 gcloud beta billing projects unlink ${DEVSHELL_PROJECT_ID}
@@ -83,7 +82,7 @@ gcloud beta billing projects unlink ${DEVSHELL_PROJECT_ID}
 
 ## Projekt konfigurieren
 
-Wir setzen noch die region und Zeitzone
+Wir setzen noch die Region und Zeitzone
 
 ```
 gcloud config set compute/region europe-west3
@@ -102,7 +101,7 @@ gcloud services enable cloudbuild.googleapis.com
 
 ## Java Projekt lokal erstellen
 
-Wir erstellen zunächst einen neuen Ordner lokal auf unserem PC, indem sich das Java Projekt befindet.
+Wir erstellen zunächst einen neuen Ordner lokal auf unserem PC, indem sich das Java Projekt befindet.<br>
 Dazu geben wir im Terminal (Mac) oder der GitShell (Windows)
 
 ```
@@ -117,7 +116,7 @@ cd ~/ToDoList
 
 wechseln wir in den neuen Ordner.
 
-Nun kümmern wir uns um die Programmstruktur und legen dort Zwei Java-Klassen und eine pom.xml an.
+Nun kümmern wir uns um die Programmstruktur und legen dort zwei Java-Klassen und eine pom.xml an.
 
 ```
 touch pom.xml
