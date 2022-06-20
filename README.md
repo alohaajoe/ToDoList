@@ -30,6 +30,7 @@ Dazu geben wir in der Cloud Shell Folgendes ein:
 ```
 gcloud projects create todolist-01
 ```
+Wenn nach einer Autorisierung gefragt wird, dieser zustimmen.
 
 --------------------------------------------------------------------------------------------
 
